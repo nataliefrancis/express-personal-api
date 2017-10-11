@@ -30,6 +30,24 @@ app.get('/', function homepage(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/api/profile', function (req, res) {
+  res.json({
+    name: "Natalie Francis",
+    github_link: "https://github.com/nataliefrancis",
+    current_city: "Longmont, CO",
+    pets: [{
+      name: "Justin",
+      type: "dog",
+      breed: "Mostly german shepherd mutt"
+      },
+      {
+        name: "Socks",
+        type: "cat",
+        breed: "I honestly don't remember, she died when I was 4"
+      }]
+  });
+});
+
 
 /*
  * JSON API Endpoints
@@ -38,16 +56,16 @@ app.get('/', function homepage(req, res) {
 app.get('/api', function api_index(req, res) {
   // TODO: Document all your api endpoints below
   res.json({
-    woops_i_has_forgot_to_document_all_my_endpoints: true, // CHANGE ME ;)
+    my_endpoints: true, // CHANGED
     message: "Welcome to my personal api! Here's what you need to know!",
-    documentation_url: "https://github.com/example-username/express_self_api/README.md", // CHANGE ME
-    base_url: "http://YOUR-APP-NAME.herokuapp.com", // CHANGE ME
+    documentation_url: "https://github.com/nataliefrancis/express-personal-api", // CHANGED
+    base_url: "https://desolate-oasis-85458.herokuapp.com/", // CHANGED
     endpoints: [
       {method: "GET", path: "/api", description: "Describes all available endpoints"},
-      {method: "GET", path: "/api/profile", description: "Data about me"}, // CHANGE ME
-      {method: "POST", path: "/api/campsites", description: "E.g. Create a new campsite"} // CHANGE ME
+      {method: "GET", path: "/api/profile", description: "Get to know me"}, // CHANGED
+      {method: "POST", path: "/api/vacations", description: "See where I'd like to go."} // CHANGED
     ]
-  })
+  });
 });
 
 /**********
