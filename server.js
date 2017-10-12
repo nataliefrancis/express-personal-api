@@ -13,30 +13,30 @@ app.use(bodyParser.json());
  * DATABASE *
  ************/
 
-// var db = require('./models');
+var db = require('./models');
 
-var vacation_list = [
-  {
-  city: "Paris, France",
-  description: "Visited the Louvre, Musee D'Orsay, Eiffel Tower, and Montmontre",
-  visited: true
-  },
-  {
-  city: "London, England",
-  description: "Visited the Tower of London, Stonehenge (outside of London), and Abbey Road",
-  visited: true
-  },
-  {
-  city: "Amsterdam, Netherlands",
-  description: "Visited Anne Frank's house, ate space cakes",
-  visited: true
-  },
-  {
-  city: "Sydney, Australia",
-  description: "Want to snorkel the Great Barrier Reef",
-  visited: false
-  }
-];
+// var vacation_list = [
+//   {
+//   city: "Paris, France",
+//   description: "Visited the Louvre, Musee D'Orsay, Eiffel Tower, and Montmontre",
+//   visited: true
+//   },
+//   {
+//   city: "London, England",
+//   description: "Visited the Tower of London, Stonehenge (outside of London), and Abbey Road",
+//   visited: true
+//   },
+//   {
+//   city: "Amsterdam, Netherlands",
+//   description: "Visited Anne Frank's house, ate space cakes",
+//   visited: true
+//   },
+//   {
+//   city: "Sydney, Australia",
+//   description: "Want to snorkel the Great Barrier Reef",
+//   visited: false
+//   }
+// ];
 
 /**********
  * ROUTES *
@@ -50,6 +50,7 @@ app.use(express.static('public'));
  * HTML Endpoints
  */
 
+// root route
 app.get('/', function homepage(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
@@ -64,7 +65,7 @@ app.get('/api/profile', function (req, res) {
     {
       name: "Justin",
       type: "dog",
-      breed: "Mostly german shepherd mutt"
+      breed: "Mostly german shepherd mutt, deceased"
     },
     {
         name: "Socks",
@@ -77,7 +78,11 @@ app.get('/api/profile', function (req, res) {
 
 // get all vacations
 app.get('/api/vacations', function (req, res) {
-  res.json(vacation_list);
+  db.Vacation.find().populate('city')
+  .exec(function(err, vacation) {
+    if (err) { return console.log("ERROR: " +err);}
+    res.json(vacation);
+  });
 });
 
 // get one vacation
@@ -130,8 +135,12 @@ app.get('/api', function api_index(req, res) {
     base_url: "https://desolate-oasis-85458.herokuapp.com/", // CHANGED
     endpoints: [
       {method: "GET", path: "/api", description: "Describes all available endpoints"},
-      {method: "GET", path: "/api/profile", description: "Get to know me"}, // CHANGED
-      {method: "POST", path: "/api/vacations", description: "See where I'd like to go."} // CHANGED
+      {method: "GET", path: "/api/profile", description: "Get to know a little about me"}, // CHANGED
+      {method: "GET", path: "/api/vacations", description: "View my vacations"},
+      {method: "POST", path: "/api/vacations", description: "Add a vacation"}, // CHANGED
+      {method: "GET", path: "/api/vacations/:id", description: "View a single vacation"},
+      {method: "PUT", path: "/api/vacations/:id", description: "Update an existing entry"},
+      {method: "DELETE", path: "/api/vacations/:id", description: "Remove a vacation"}
     ]
   });
 });

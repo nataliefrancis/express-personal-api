@@ -26,7 +26,7 @@ var vacation_list = [
 	}
 ];
 
-db.Vacation.remove({}, function () {
+db.Vacation.remove({}, function (err, vacations) {
 	console.log("removed all vacations");
 	db.Vacation.create(vacation_list, function (err, vacations) {
 		if (err) {
@@ -34,10 +34,11 @@ db.Vacation.remove({}, function () {
 			return;
 		}
 		console.log("created ", +vacation.legth+ " vacations");
+		process.exit(); // we're all done! Exit the program.
 	});
 });
 
-// var new_vacation = {description: "Sharp rocks. Middle of nowhere."};
+
 
 // db.Vacation.create(new_campsite, function(err, campsite){
 //   if (err){
