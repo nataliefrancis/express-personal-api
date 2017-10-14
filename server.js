@@ -1,7 +1,7 @@
 // require express and other modules
 var express = require('express'),
     app = express();
-var vacation = require('./models/vacation');
+
 
 // parse incoming urlencoded form data
 // and populate the req.body object
@@ -74,12 +74,12 @@ app.get('/api/vacations/:id', function (req, res) {
 
 //create new vacation
 app.post('/api/vacations', function (req, res) {
-   let newVacation = {
+   let newVacation = new db.Vacation({
     "city": req.body.city,
     "description": req.body.description,
     "visited": req.body.visited
-  };
-  db.Vacation.create(newVacation, function (err, vaction) {
+  });
+  newVacation.save(function (err, vaction) {
     if (err) throw err;
     res.json(vacation);
   });
