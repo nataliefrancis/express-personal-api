@@ -26,25 +26,25 @@ var vacation_list = [
 	}
 ];
 
-db.Vacation.remove({}, function (err, vacations) {
-	console.log("removed all vacations");
-	db.Vacation.create(vacation_list, function (err, vacations) {
-		if (err) {
-			console.log(err);
-			return;
-		}
-		console.log("created ", +vacation.legth+ " vacations");
-		process.exit(); // we're all done! Exit the program.
-	});
-});
+// db.Vacation.remove({}, function (err, vacations) {
+// 	console.log("removed all vacations");
+// 	db.Vacation.create(vacation_list, function (err, vacations) {
+// 		if (err) {
+// 			console.log(err);
+// 			return;
+// 		}
+// 		console.log("created ", +vacation.legth+ " vacations");
+// 		process.exit(); // we're all done! Exit the program.
+// 	});
+// });
 
 
 
-// db.Vacation.create(new_campsite, function(err, campsite){
-//   if (err){
-//     return console.log("Error:", err);
-//   }
+db.Vacation.create(new_campsite, function(err, campsite){
+  if (err){
+    return console.log("Error:", err);
+  }
 
-//   console.log("Created new campsite", campsite._id)
-//   process.exit(); // we're all done! Exit the program.
-// })
+  console.log("Created new campsite", campsite._id)
+  process.exit(); // we're all done! Exit the program.
+})
