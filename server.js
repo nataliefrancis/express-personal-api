@@ -87,8 +87,7 @@ app.post('/api/vacations', function (req, res) {
 
 //update one vacation
 app.put('/api/vacations/:id', function(req, res) {
-  let id = req.params.id;
-  db.Vacation.findOne({_id: id}, function(err, vacation) {
+  db.Vacation.findOne({_id: req.params.id}, function(err, vacation) {
     if (err) {
       console.log("ERROR:" +err);
     
