@@ -15,28 +15,6 @@ app.use(bodyParser.json());
 
 var db = require('./models');
 
-// var vacation_list = [
-//   {
-//   city: "Paris, France",
-//   description: "Visited the Louvre, Musee D'Orsay, Eiffel Tower, and Montmontre",
-//   visited: true
-//   },
-//   {
-//   city: "London, England",
-//   description: "Visited the Tower of London, Stonehenge (outside of London), and Abbey Road",
-//   visited: true
-//   },
-//   {
-//   city: "Amsterdam, Netherlands",
-//   description: "Visited Anne Frank's house, ate space cakes",
-//   visited: true
-//   },
-//   {
-//   city: "Sydney, Australia",
-//   description: "Want to snorkel the Great Barrier Reef",
-//   visited: false
-//   }
-// ];
 
 /**********
  * ROUTES *
@@ -78,47 +56,60 @@ app.get('/api/profile', function (req, res) {
 
 // get all vacations
 app.get('/api/vacations', function (req, res) {
-  db.Vacation.find().populate('city')
-  .exec(function(err, vacation) {
-    if (err) { return console.log("ERROR: " +err);}
-    res.json(vacation);
+  db.Vacation.find({}, function(err, vacations) {
+    if (err) { 
+      return console.log("ERROR: " +err);
+    }
+    res.json(vacations);
   });
 });
 
 // get one vacation
 app.get('/api/vacations/:id', function (req, res) {
   index = req.params.id;
-  res.json(vacation_list[index]);
+  db.Vacation.findOne({_id:index}, function(err, vacation) {
+    res.json(vacation);
+  });
 });
 
 //create new vacation
 app.post('/api/vacations', function (req, res) {
-  console.log(req);
    let newVacation = {
-    city: req.body.city,
-    description: req.body.description,
-    visited: req.body.visited
+    "city": req.body.city,
+    "description": req.body.description,
+    "visited": req.body.visited
   };
-  vacation_list.push(newVacation);
-  res.json(newVacation);
+  db.Vacation.create(newVacation, function (err, vaction) {
+    if (err) throw err;
+    res.json(vacation);
+  });
 });
 
 //update one vacation
 app.put('/api/vacations/:id', function(req, res) {
-  index = req.params.id;
-  fixVacation = vacation_list[index];
-  fixVacation.city = req.body.city;
-  fixVacation.description = req.body.description;
-  fixVacation.visited = req.body.visited;
-  res.json(fixVacation);
+  let id = req.params.id;
+  db.Vacation.findOne({_id: id}, function(err, vacation) {
+    if (err) {
+      console.log("ERROR:" +err);
+    
+    vacation.city = req.body.city;
+    vacation.description = req.body.description;
+    vacation.visited = req.body.visited;
+    vacation.save();
+    }
+    res.json(vacation);
+  });
 });
 
 // delete vacation
 app.delete('/api/vacations/:id', function(req, res) {
   index =req.params.id;
-  console.log("Going to delete " +vacation_list[index]);
-  vacation_list.splice(index, 1);
-  res.json(vacation_list);
+  db.Vacation.findOneAndRemove({_id:index}, function(err, vacation) {
+    if (err) {
+      console.log("ERROR:" +err);
+    }
+    res.send("Vacation deleted");
+  });
 });
 
 
