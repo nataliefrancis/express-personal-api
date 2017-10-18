@@ -79,7 +79,7 @@ app.post('/api/vacations', function (req, res) {
     "description": req.body.description,
     "visited": req.body.visited
   });
-  newVacation.save(function (err, vaction) {
+  newVacation.save(function (err, vacation) {
     if (err) throw err;
     res.json(vacation);
   });
@@ -90,12 +90,11 @@ app.put('/api/vacations/:id', function(req, res) {
   db.Vacation.findOne({_id: req.params.id}, function(err, vacation) {
     if (err) {
       console.log("ERROR:" +err);
-    
+    }
     vacation.city = req.body.city;
     vacation.description = req.body.description;
     vacation.visited = req.body.visited;
     vacation.save();
-    }
     res.json(vacation);
   });
 });

@@ -40,11 +40,11 @@ var vacation_list = [
 
 
 
-db.Vacation.create(new_campsite, function(err, campsite){
+db.Vacation.create(vacation_list, function(err, campsite){
   if (err){
     return console.log("Error:", err);
   }
 
-  console.log("Created new campsite", campsite._id)
+  console.log("Created new vacations!");
   process.exit(); // we're all done! Exit the program.
 })
